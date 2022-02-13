@@ -1,7 +1,7 @@
 {
-  "name": "goit-react-hw-02-feedback",
+  "name": "goit-react-hw-04-feedback",
   "version": "0.1.0",
-  "homepage": "https://andriivv.github.io/goit-react-hw-03-phonebook/",
+  "homepage": "https://andriivv.github.io/goit-react-hw-04-phonebook/",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.1",
