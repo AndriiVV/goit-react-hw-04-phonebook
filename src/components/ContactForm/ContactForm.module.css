@@ -1,0 +1,30 @@
+.form {
+	padding: 20px;
+	border: 1px solid lightgrey;
+	text-align: left;
+}
+
+.field {
+	display: block;
+	margin: 10px;
+}
+
+.title {
+	display: block;
+}
+
+input {
+	width: 200px;
+}
+
+.button {
+	width: 120px;
+	margin-left: 10px;
+	background-color: whitesmoke;
+	border: 1px solid grey;
+	border-radius: 2px;
+}
+
+.button:hover {
+	background-color: lightgrey;
+}

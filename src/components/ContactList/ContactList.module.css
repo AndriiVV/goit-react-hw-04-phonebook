@@ -1,0 +1,16 @@
+.btn {
+	margin-left: 10px;
+	background-color: whitesmoke;
+	border: 1px solid grey;
+	border-radius: 2px;
+	/* height: 16px; */
+}
+
+.btn:hover {
+	background-color: lightgrey;
+}
+
+.item {
+	font-size: 16px;
+	line-height: 32px;
+}
