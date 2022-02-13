@@ -4,12 +4,12 @@ import ContactForm from "./components/ContactForm/ContactForm";
 import Filter from "./components/Filter/Filter";
 import ContactList from "./components/ContactList/ContactList";
 
-import { Component } from "react";
+import { useState, useEffect } from "react";
 
 const KEY = "contacts";
 
-class App extends Component {
-	getFromLocalStorage = (key) => {
+const App = () => {
+	const getFromLocalStorage = (key) => {
 		try {
 			const rawData = localStorage.getItem(key);
 			const contacts = JSON.parse(rawData);
@@ -24,7 +24,7 @@ class App extends Component {
 		}
 	};
 
-	saveToLocalStorage = (key, value) => {
+	const saveToLocalStorage = (key, value) => {
 		try {
 			const contacts = JSON.stringify(value);
 			localStorage.setItem(key, contacts);
@@ -33,49 +33,50 @@ class App extends Component {
 		}
 	};
 
-	constructor(props) {
-		super(props);
-		this.state = { contacts: this.getFromLocalStorage(KEY), filter: "" };
-	}
+	const [phonebook, setPhonebook] = useState(() => {
+		return { contacts: getFromLocalStorage(KEY), filter: "" };
+	});
 
-	componentDidUpdate() {
-		this.saveToLocalStorage(KEY, this.state.contacts);
-	}
+	useEffect(() => {
+		saveToLocalStorage(KEY, phonebook.contacts);
+	}, [phonebook]);
 
-	addContact = ({ newContact }) => {
-		if (this.state.contacts.find((item) => item.name === newContact.name)) {
+	const addContact = ({ newContact }) => {
+		if (phonebook.contacts.find((item) => item.name === newContact.name)) {
 			alert(`${newContact.name} is already in contacts!`);
 			return;
 		}
-		this.setState((prev) => ({ contacts: [...prev.contacts, newContact] }));
-	};
-
-	handleFilter = (e) => {
-		this.setState({ filter: e.target.value });
-	};
-
-	handleDelete = (id) => {
-		this.setState((prev) => ({
-			contacts: prev.contacts.filter((el) => el.id !== id),
+		setPhonebook((prev) => ({
+			contacts: [...prev.contacts, newContact],
+			filter: prev.filter,
 		}));
 	};
 
-	render() {
-		return (
-			<div className="App">
-				<h1 className="title">Phonebook</h1>
-				<ContactForm addContact={this.addContact} />
+	const handleFilter = (e) => {
+		setPhonebook({ ...phonebook, filter: e.target.value });
+	};
 
-				<h2 className="title">Contacts</h2>
-				<Filter handleFilter={this.handleFilter} />
-				<ContactList
-					contacts={this.state.contacts}
-					seek={this.state.filter}
-					handleDelete={this.handleDelete}
-				/>
-			</div>
-		);
-	}
-}
+	const handleDelete = (id) => {
+		setPhonebook((prev) => ({
+			contacts: prev.contacts.filter((el) => el.id !== id),
+			filter: prev.filter,
+		}));
+	};
+
+	return (
+		<div className="App">
+			<h1 className="title">Phonebook</h1>
+			<ContactForm addContact={addContact} />
+
+			<h2 className="title">Contacts</h2>
+			<Filter handleFilter={handleFilter} />
+			<ContactList
+				contacts={phonebook.contacts}
+				seek={phonebook.filter}
+				handleDelete={handleDelete}
+			/>
+		</div>
+	);
+};
 
 export default App;
